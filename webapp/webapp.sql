@@ -1,3 +1,4 @@
+create database Test;
 use Test;
 CREATE TABLE userInfo (
 	userName varchar(30) NOT NULL UNIQUE,
