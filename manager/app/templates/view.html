@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-    <form action='{{url_for("ec2_list")}}' method='get'>
-        <input type='submit' value='Back' />
+    <form action='{{url_for("manager")}}' method='get'>
+        <input type='submit' value='Back to manager home page' />
     </form>
 
     <table>
@@ -17,15 +17,6 @@
 
     <div id="cpu_plot" style="width:300px;height:150px"></div>
 
-    <h2>Network In</h2>
-
-    <div id="net_in_plot" style="width:300px;height:150px"></div>
-
-
-    <h2>Network Out</h2>
-
-    <div id="net_out_plot" style="width:300px;height:150px"></div>
-
 
     <script>
 
@@ -36,10 +27,7 @@
             }
         };
 
-
         $.plot($("#cpu_plot"), [ {{ cpu_stats }} ] , options);
-        $.plot($("#net_in_plot"), [ {{ net_in_stats }} ] , options);
-        $.plot($("#net_out_plot"), [ {{ net_out_stats }} ] , options);
 
     </script>
 
