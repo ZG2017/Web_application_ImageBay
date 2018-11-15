@@ -1,4 +1,4 @@
-amiId = 'ami-0a3d8cd538322f6da'
+amiId = 'ami-00f3f1b21135d22e7'
 MAX_INSTANCES = 10
 MIN_INSTANCES = 1
 Monitoring = {'Enabled': True}
