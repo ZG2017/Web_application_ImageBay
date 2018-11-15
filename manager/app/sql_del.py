@@ -17,9 +17,7 @@ def Del():
     name_list = []
     for i in range(len(row)):
         name_list.append(row[i][0])
-    delete_only(name_list)
-    return redirect(url_for('manager'))
-    
+    delete_only(name_list)    
     # delete mysql
     
     query_1 = "DELETE FROM user2Images"
@@ -37,7 +35,8 @@ def delete_only(user_list):
         bucket = s3.Bucket(config.s3_bucketname)
 
         objects_to_delete = []
-        for obj in bucket.objects.filter(Prefix = i+'/'):
+        filename = i+'/'
+        for obj in bucket.objects.filter(prefix = filename):
             objects_to_delete.append({'Key': obj.key})
 
         bucket.delete_objects(
