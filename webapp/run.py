@@ -1,4 +1,3 @@
 from app import webapp
 
-# run flask app at localhost:5000
-webapp.run(debug=False)
+webapp.run(host = '127.0.0.1', port = 5000)
