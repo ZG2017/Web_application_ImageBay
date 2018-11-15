@@ -30,7 +30,7 @@ def Del():
     return redirect(url_for('manager'))
 
 def delete_only(name_list):
-    s3 = boto3.resource('s3')
+    s3 = boto3.resource('s3',**config.aws_connect_args)
     for i in name_list:
         file_name = i+'/'
         objects_to_delete = s3.meta.client.list_objects(Bucket=config.s3_bucketname, Prefix=file_name)

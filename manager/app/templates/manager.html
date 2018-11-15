@@ -17,9 +17,9 @@
                     </form>
                     <br>
                     <br>
-                    <form action="{{url_for('ec2_random_destroy')}}" method="post">
+                    <form action="{{url_for('ec2_random_destroy')}}" method="post" onsubmit='return confirm("confirm to delete?")' >
                             Randomly delete a worker:<br>
-                            <input type="submit" value="Randomly delete a worker" onsubmit='return confirm("confirm to delete?")'>
+                            <input type="submit" value="Randomly delete a worker">
                     </form>
                 </fieldset>
                 <br>
@@ -56,10 +56,10 @@
                  <br>
                  <fieldset>
                         <legend>Delete data</legend>
-                        <form action="{{url_for('Del')}}" method="post">
+                        <form action="{{url_for('Del')}}" method="post" onsubmit='return confirm("confirm to delete all data?")' >
                             Delete all data:
                             <br>
-                            <input type="submit" value="Delete all data", onsubmit='return confirm("confirm to delete all data?")'>
+                            <input type="submit" value="Delete all data">
                         </form>
                     </fieldset>
         </fieldset>
