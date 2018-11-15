@@ -17,7 +17,9 @@ def Del():
     name_list = []
     for i in range(len(row)):
         name_list.append(row[i][0])
-    delete()    # delete mysql
+    delete_only(name_list)    
+    
+    # delete mysql
     
     query_1 = "DELETE FROM user2Images"
     query_2 = "DELETE FROM userInfo"
@@ -27,6 +29,15 @@ def Del():
     session['error'] = 'all data in database has been deleted!'
     return redirect(url_for('manager'))
 
+def delete_only(name_list):
+    s3 = boto3.resource('s3')
+    for i in name_list:
+        file_name = i+'/'
+        objects_to_delete = s3.meta.client.list_objects(Bucket=config.s3_bucketname, Prefix=file_name)
+
+        delete_keys = {'Objects' : []}
+        delete_keys['Objects'] = [{'Key' : k} for k in [obj['Key'] for obj in objects_to_delete.get('Contents', [])]]
+        s3.meta.client.delete_objects(Bucket="MyBucket", Delete=delete_keys)
 
 def delete():
     client = boto3.client('s3')
