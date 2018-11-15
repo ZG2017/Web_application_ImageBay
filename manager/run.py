@@ -9,7 +9,7 @@ class Config(object):
             'func': '__main__:auto_check_func',
             'args': '',
             'trigger': 'interval',
-            'seconds': 10,
+            'seconds': 30,
         }
     ]
 

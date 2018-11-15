@@ -8,3 +8,4 @@ webapp.secret_key = '\x80\xa9s*\x12\xc7x\xa9d\x1f(\x03\xbeHJ:\x9f\xf0!\xb1a\xaa\
 
 
 from app import EC2_Process
+from app import sql_del

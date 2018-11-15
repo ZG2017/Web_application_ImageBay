@@ -53,7 +53,15 @@
                         </form>
                     {% endif %}
                  </fieldset>
-
+                 <br>
+                 <fieldset>
+                        <legend>Delete data</legend>
+                        <form action="{{url_for('Del')}}" method="post">
+                            Delete all data:
+                            <br>
+                            <input type="submit" value="Delete all data", onsubmit='return confirm("confirm to delete all data?")'>
+                        </form>
+                    </fieldset>
         </fieldset>
     </div>
 
