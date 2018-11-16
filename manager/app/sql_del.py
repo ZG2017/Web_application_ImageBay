@@ -17,13 +17,15 @@ def Del():
     name_list = []
     for i in range(len(row)):
         name_list.append(row[i][0])
-    delete()    
+    if name_list:
+        delete()    
     
     # delete mysql
     query_1 = 'truncate `user2Images`'
     query_2 = 'truncate `userInfo`'
     cursor.execute(query_1)
     cursor.execute(query_2)
+    
 
     session['error'] = 'all data in database has been deleted!'
     return redirect(url_for('manager'))

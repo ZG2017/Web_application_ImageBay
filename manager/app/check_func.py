@@ -17,22 +17,24 @@ def get_cpu_utilization():
     instances = [i for i in instances]
 
     counter = 0
+    cpu_stats = []
     for instance in instances:
         tmp_instance = ec2.Instance(instance.id)
         client = boto3.client('cloudwatch')
         cpu = client.get_metric_statistics(Period = 1 * 60,
-                                           StartTime = datetime.utcnow() - timedelta(seconds = 10 * 60),
+                                           StartTime = datetime.utcnow() - timedelta(seconds = 3 * 60),
                                            EndTime = datetime.utcnow() - timedelta(seconds = 0),
                                            MetricName = 'CPUUtilization',
                                            Namespace = 'AWS/EC2',  # Unit='Percent',
                                            Statistics = ["Average"],
                                            Dimensions = [{'Name': 'InstanceId', 'Value': tmp_instance.id}])
-        cpu_stats = []
+        
         counter += 1
         for point in cpu['Datapoints']:
             cpu_stats.append(point['Average'])
+    print(len(cpu_stats))
     if len(cpu_stats) == 0:
-        return -1
+        return -1,counter
     else:
         return sum(cpu_stats)/len(cpu_stats),counter
 

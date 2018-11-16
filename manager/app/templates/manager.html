@@ -29,16 +29,16 @@
                         Auto scaling is currently off:<br>
                         <form action="{{url_for('turn_on_auto_scaling')}}" method="post">
                             Grow rate:
-                            <input type="number" name = 'grow_rate'>
+                            <input type="number" name = 'grow_rate' value = '{{grow_rate}}'>
                             <br>
                             Grow threshold:
-                            <input type="number" name = 'grow_threshold'>
+                            <input type="number" name = 'grow_threshold' value = '{{grow_threshold}}'>
                             <br>
                             Shrink rate:
-                            <input type="number" name = 'shrink_rate'>
+                            <input type="number" name = 'shrink_rate' value = '{{shrink_rate}}'>
                             <br>
                             Shrink threshold:
-                            <input type="number" name = 'shrink_threshold'>
+                            <input type="number" name = 'shrink_threshold' value = '{{shrink_threshold}}'>
                             <br>
                             <input type="submit" value = 'Apply and Turn on auto scaling'>
                         </form>

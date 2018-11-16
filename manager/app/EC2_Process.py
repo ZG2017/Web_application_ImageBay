@@ -130,6 +130,13 @@ def ec2_create():
 @webapp.route('/turn_on_auto_scaling',methods=['POST'])
 # turn on the auto scaling
 def turn_on_auto_scaling():
+    if not request.form['grow_rate'] or not request.form['grow_threshold'] or\
+       not request.form['shrink_rate'] or not request.form['shrink_threshold']:
+        session['error'] = 'please entry all required parameters!'
+        return redirect(url_for('manager'))
+    if int(request.form['grow_threshold']) <= 0 or int(request.form['shrink_threshold']) <= 0:
+        session['error'] = 'threshold can not smaller than 0!'
+        return redirect(url_for('manager'))
     if int(request.form['grow_rate']) <= 1:
         session['error'] = 'grow rate cannot smaller than or equals to 1!'
         return redirect(url_for('manager'))

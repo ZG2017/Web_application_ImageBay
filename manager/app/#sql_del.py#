@@ -17,15 +17,17 @@ def Del():
     name_list = []
     for i in range(len(row)):
         name_list.append(row[i][0])
-    print(name_list)
-    delete_only(name_list)    
+    if name_list:
+        delete()    
     
     # delete mysql
-    query_1 = 'TRUNCATE user2Images'
-    query_2 = 'TRUNCATE userInfo'
+    cnx = sql.get_db()
+    cursor = cnx.cursor()
+    query_1 = 'truncate `user2Images`'
+    query_2 = 'truncate `userInfo`'
     cursor.execute(query_1)
     cursor.execute(query_2)
-    print("done")
+    
 
     session['error'] = 'all data in database has been deleted!'
     return redirect(url_for('manager'))
@@ -41,7 +43,7 @@ def delete_only(name_list):
         s3.meta.client.delete_objects(Bucket="MyBucket", Delete=delete_keys)
 
 def delete():
-    client = boto3.client('s3')
+    client = boto3.client('s3',**config.aws_connect_args)
     paginator = client.get_paginator('list_objects_v2')
     pages = paginator.paginate(Bucket=config.s3_bucketname)
 
@@ -51,9 +53,9 @@ def delete():
 
         # flush once aws limit reached
         if len(delete_us['Objects']) >= 1000:
-            client.delete_objects(Bucket=bucket, Delete=delete_us)
+            client.delete_objects(Bucket=config.s3_bucketname, Delete=delete_us)
             delete_us = dict(Objects=[])
 
     # flush rest
     if len(delete_us['Objects']):
-        client.delete_objects(Bucket=bucket, Delete=delete_us)
+        client.delete_objects(Bucket=config.s3_bucketname, Delete=delete_us)
