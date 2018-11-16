@@ -18,6 +18,7 @@ def get_cpu_utilization():
 
     counter = 0
     cpu_stats = []
+    tmp = 0
     for instance in instances:
         tmp_instance = ec2.Instance(instance.id)
         client = boto3.client('cloudwatch')
@@ -31,7 +32,8 @@ def get_cpu_utilization():
         
         counter += 1
         for point in cpu['Datapoints']:
-            cpu_stats.append(point['Average'])
+            tmp = point['Average']
+        cpu_stats.append(tmp)
     print(len(cpu_stats))
     if len(cpu_stats) == 0:
         return -1,counter

@@ -25,6 +25,7 @@ def Del():
     query_2 = 'truncate `userInfo`'
     cursor.execute(query_1)
     cursor.execute(query_2)
+    sql.close_db()
     
 
     session['error'] = 'all data in database has been deleted!'
