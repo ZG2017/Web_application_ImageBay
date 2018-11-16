@@ -29,7 +29,7 @@ def manager():
 
     return render_template("manager.html",
                            error = error, 
-                           title = "Manager", 
+                           title = "Manager",
                            instances = instances, 
                            auto_scaling = AWS_config.Auto_scaling,
                            grow_rate = AWS_config.grow_rate,
@@ -80,12 +80,13 @@ def ec2_view(id):
     return render_template("view.html",title = "Instance Info",instance = instance,cpu_stats = cpu_stats)
 
 
-@webapp.route('/ec2_examples/refresh',methods=['GET'])
+@webapp.route('/refresh',methods=['GET'])
 def refresh():
+    session['error'] = 'home page refreshed!'
     return redirect(url_for('manager'))
 
 
-@webapp.route('/ec2_examples/create',methods=['POST'])
+@webapp.route('/create',methods=['POST'])
 # Start a new EC2 instance
 def ec2_create():
 
@@ -126,32 +127,34 @@ def ec2_create():
     return redirect(url_for('manager'))
 
 
-@webapp.route('/ec2_examples/turn_on_auto_scaling',methods=['POST'])
+@webapp.route('/turn_on_auto_scaling',methods=['POST'])
 # turn on the auto scaling
 def turn_on_auto_scaling():
-    if request.form['grow_rate'] <= 1:
+    if int(request.form['grow_rate']) <= 1:
         session['error'] = 'grow rate cannot smaller than or equals to 1!'
         return redirect(url_for('manager'))
-    elif request.form['shrink_rate'] <= 1:
+    elif int(request.form['shrink_rate']) <= 1:
         session['error'] = 'shrink rate cannot smaller than or equals to 1!'
         return redirect(url_for('manager'))
-    AWS_config.grow_rate = request.form['grow_rate']
-    AWS_config.grow_threshold = request.form['grow_threshold']
-    AWS_config.shrink_rate = request.form['shrink_rate']
-    AWS_config.shrink_threshold = request.form['shrink_threshold']
+    AWS_config.grow_rate = int(request.form['grow_rate'])
+    AWS_config.grow_threshold = int(request.form['grow_threshold'])
+    AWS_config.shrink_rate = int(request.form['shrink_rate'])
+    AWS_config.shrink_threshold = int(request.form['shrink_threshold'])
     AWS_config.Auto_scaling = True
+    session['error'] = 'auto scaling is on!'
     return redirect(url_for('manager'))
 
 
-@webapp.route('/ec2_examples/turn_off_auto_scaling',methods=['POST'])
+@webapp.route('/turn_off_auto_scaling',methods=['POST'])
 # turn off the auto scaling
 def turn_off_auto_scaling():
     AWS_config.Auto_scaling = False
+    session['error'] = 'auto scaling is off'
     return redirect(url_for('manager'))
 
 
 
-@webapp.route('/ec2_examples/delete/<id>',methods=['POST'])
+@webapp.route('/delete/<id>',methods=['POST'])
 # Terminate a EC2 instance
 def ec2_destroy(id):
     # create connection to ec2
@@ -179,7 +182,7 @@ def ec2_destroy(id):
     return redirect(url_for('manager'))
 
 
-@webapp.route('/ec2_examples/random_delete',methods=['POST'])
+@webapp.route('/random_delete',methods=['POST'])
 # randomly terminate a EC2 instance
 def ec2_random_destroy():
     # create connection to ec2

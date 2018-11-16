@@ -46,12 +46,10 @@ def auto_check_func():
                 # create a new instance
                 ec2_create_by_rate(AWS_config.grow_rate)
                 print('new instances created!')
-            """
             elif average_cpu_utilization <= AWS_config.shrink_threshold and instances_counter > AWS_config.MIN_INSTANCES:
                 ec2_destroy_by_rate(AWS_config.shrink_rate)
                 print('instances destroyed!')
-            """
-        print(average_cpu_utilization)
+        print(average_cpu_utilization,instances_counter)
 
 
 # Start multiple new EC2 instances by rate
