@@ -24,7 +24,9 @@ def Del():
     query_1 = 'truncate `user2Images`'
     query_2 = 'truncate `userInfo`'
     cursor.execute(query_1)
+    cnx.commit()
     cursor.execute(query_2)
+    cnx.commit()
     sql.close_db()
     
 
