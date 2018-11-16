@@ -1,3 +1,4 @@
+create database Test;
 use Test;
 CREATE TABLE userInfo (
 	userName varchar(30) NOT NULL UNIQUE,
@@ -14,8 +15,7 @@ CREATE TABLE user2Images (
     trans_a varchar(500) NOT NULL,
     trans_b varchar(500) NOT NULL,
     trans_c varchar(500) NOT NULL,
-    PRIMARY KEY (userName,Thumbnail),
-    FOREIGN KEY (userName) REFERENCES userInfo(userName)
+    PRIMARY KEY (userName,Thumbnail)
 );
 
 
