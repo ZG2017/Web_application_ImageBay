@@ -5,6 +5,8 @@ from wand.image import Image
 from app import ImageProcess
 import os
 from app import sql
+from app import config
+
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 # show test page
@@ -26,8 +28,10 @@ def testUploadSubmit():
     cnx = sql.get_db()
     cursor = cnx.cursor()
     query = "SELECT * FROM user2Images WHERE userName = %s AND original = %s"
-    cursor.execute(query,(request.form["userID"],os.path.join(os.path.join(webapp.config["UPLOAD_FOLDER"],request.form["userID"]),myFile.filename)))
+    myFile_link = config.S3_ADDRESS + request.form['userID'] + '/' + myFile.filename
+    cursor.execute(query,(request.form["userID"], myFile_link))
     row = cursor.fetchone()
+    sql.close_db()
     if row != None:
         session["error"] = "Image with same name has already been uploaded!"
         return redirect(url_for("testUpload"))
@@ -38,11 +42,13 @@ def testUploadSubmit():
         filename = secure_filename(myFile.filename)
         path_original = os.path.join(userPath,filename)
         myFile.save(path_original)
-        path_thumbnail,path_a,path_b,path_c = ImageProcess.ImageTransSave(userPath, filename)
-        ImageProcess.DBImageSave(request.form["userID"],path_thumbnail,path_original,path_a,path_b,path_c)
+        path_origin, path_thumbnail,path_a,path_b,path_c = ImageProcess.ImageTransSave(request.form["userID"],userPath, filename)
+        ImageProcess.DBImageSave(request.form["userID"],path_thumbnail,path_origin,path_a,path_b,path_c)
+
+        # path_origin，path_thumbnail,path_a,path_b,path_c = ImageProcess.ImageTransSave(userPath, filename)
+        # ImageProcess.DBImageSave(request.form["userID"],path_thumbnail,path_original,path_a,path_b,path_c)
         session["error"] = "the file has been uploaded!"
         return redirect(url_for("testUpload")) 
     else:
         session["error"] = "can not recognize the file, please reupload"
-        return redirect(url_for("testUpload"))
-    
+        return redirect(url_for("testUpload"))    

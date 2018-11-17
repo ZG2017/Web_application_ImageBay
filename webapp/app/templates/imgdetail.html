@@ -8,7 +8,7 @@
         <div style="text-align:right"><a href="{{url_for('LogOut')}}">log Out</a></div>        
         <hr style="border-style:inset; border-width:2px;">
         {% for img in images %}
-            <img src="{{url_for('static',filename=img)}}">
+            <img src="{{img}}">
         {% endfor %}
     </body>
 </html>

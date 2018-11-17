@@ -4,6 +4,8 @@ from app import sql
 import hashlib
 import base64
 import os
+from app import config
+import boto3
 
 # add salt and hash the password
 def Pwd2Hash(password,salt=None):
@@ -48,6 +50,7 @@ def SignUpSubmit():
     query = ''' SELECT * FROM userInfo WHERE userName = %s '''
     cursor.execute(query,(request.form["username"],))
     row = cursor.fetchone()
+    sql.close_db()
     if row == None:
         session["username"] = request.form["username"]
     else:
@@ -58,9 +61,12 @@ def SignUpSubmit():
     if "email" in request.form:
         if request.form["email"] == "":
             error += "Please enter the email address.\n"
+    cnx = sql.get_db()
+    cursor = cnx.cursor()
     query = ''' SELECT * FROM userInfo WHERE userEmail = %s '''
     cursor.execute(query,(request.form["email"],))
     row = cursor.fetchone()
+    sql.close_db()
     if row == None:
         session["email"] = request.form["email"]
     else:
@@ -91,6 +97,16 @@ def SignUpSubmit():
     
     cursor.execute(query,(request.form["username"],request.form["email"],pwd,salt))
     cnx.commit()
+    sql.close_db()
+    create_file(session["username"]+'/')
     session["error"] = None
     return redirect(url_for("HomePage"))
+
+def create_file(username):
+    s3_client = boto3.client('s3',**config.aws_connection_args)
+    try:
+        response = s3_client.put_object(Bucket=config.s3_bucketname, Key=username)
+    except Exception as e:
+        print("create fail")
+        return e
     

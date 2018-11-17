@@ -40,7 +40,7 @@ def SignInSubmit():
     query = "SELECT * FROM userInfo WHERE userName = %s"
     cursor.execute(query,(user_name,))
     row = cursor.fetchone()
-
+    sql.close_db()
     if row == None:
         session["resubmit"] = True
         session["error"] = "username don't exsist!"
