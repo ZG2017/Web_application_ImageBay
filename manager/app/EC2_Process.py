@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, request, session
 from app import webapp
 import random
+import time
 
 import boto3
 from app import AWS_config
@@ -112,6 +113,8 @@ def ec2_create():
                                         UserData = AWS_config.UserData)
 
         instanceID = response[0].instance_id
+
+        time.sleep(2)
         # register to load balancer
         client = boto3.client('elb')
         response = client.register_instances_with_load_balancer(

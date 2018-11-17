@@ -8,26 +8,34 @@ import boto3
 # to delete all data in mysql database
 @webapp.route("/sql_del",methods = ["GET","POST"])
 def Del():
-    # delete S3
     cnx = sql.get_db()
     cursor = cnx.cursor()
-    query_0 = "SELECT userName FROM userInfo"
-    cursor.execute(query_0)
+    
+    # delete mysql
+    query_1 = "select concat('kill ' ,id ,';') from information_schema.PROCESSLIST where User = 'remoteuser';"
+    cursor.execute(query_1)
+    querys = cursor.fetchall()
+    if querys:
+        for query in querys:
+            cursor.execute(query[0])
+    query_2 = 'truncate `user2Images`'
+    query_3 = 'truncate `userInfo`'
+    cursor.execute(query_2)
+    cnx.commit()
+    cursor.execute(query_3)
+    cnx.commit()
+
+    
+    # delete S3
+    query_4 = "SELECT userName FROM userInfo"
+    cursor.execute(query_4)
     row = cursor.fetchall()
+    sql.close_db()
     name_list = []
     for i in range(len(row)):
         name_list.append(row[i][0])
     if name_list:
-        delete()    
-    
-    # delete mysql
-    query_1 = 'truncate `user2Images`'
-    query_2 = 'truncate `userInfo`'
-    cursor.execute(query_1)
-    cnx.commit()
-    cursor.execute(query_2)
-    cnx.commit()
-    sql.close_db()
+        delete()
     
 
     session['error'] = 'all data in database has been deleted!'
