@@ -1,2 +1,2 @@
 # Web_application_ImageBay
-ImageBay web application using AWS could based on Flask framework
+ImageBay web application using AWS cloud based on Flask framework
