@@ -1,12 +1,12 @@
-db_config = {'user': 'root',
-             'password':'ece1779pass',
-             'host':'127.0.0.1',
-             'database': 'Test'}
+db_config = {'user': '*********',
+             'password':'*************',
+             'host':'************',
+             'database': '*****'}
 
-s3_bucketname = 'ece1779a2john'
+s3_bucketname = '***************'
 
 aws_connect_args = {
-    'aws_access_key_id':'AKIAJERDRE2XLXFI3HOA',
-    'aws_secret_access_key':'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',
-    'region_name':'us-east-1'
+    'aws_access_key_id':'******************',
+    'aws_secret_access_key':'*****************************',
+    'region_name':'************'
 }
