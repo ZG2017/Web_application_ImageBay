@@ -11,33 +11,33 @@ def Del():
     cnx = sql.get_db()
     cursor = cnx.cursor()
     
-    # delete mysql
+    # delete locked processings
     query_1 = "select concat('kill ' ,id ,';') from information_schema.PROCESSLIST where User = 'remoteuser';"
     cursor.execute(query_1)
     querys = cursor.fetchall()
     if querys:
         for query in querys:
             cursor.execute(query[0])
-    query_2 = 'truncate `user2Images`'
-    query_3 = 'truncate `userInfo`'
-    cursor.execute(query_2)
-    cnx.commit()
-    cursor.execute(query_3)
-    cnx.commit()
-
-    
-    # delete S3
+            
+     # delete S3
     query_4 = "SELECT userName FROM userInfo"
     cursor.execute(query_4)
     row = cursor.fetchall()
-    sql.close_db()
     name_list = []
     for i in range(len(row)):
         name_list.append(row[i][0])
     if name_list:
         delete()
     
-
+    # delete the database
+    query_2 = 'truncate `user2Images`'
+    query_3 = 'truncate `userInfo`'
+    cursor.execute(query_2)
+    cnx.commit()
+    cursor.execute(query_3)
+    cnx.commit()
+    sql.close_db()
+    
     session['error'] = 'all data in database has been deleted!'
     return redirect(url_for('manager'))
 
